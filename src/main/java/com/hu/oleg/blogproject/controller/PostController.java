@@ -4,6 +4,7 @@ package com.hu.oleg.blogproject.controller;
 import com.hu.oleg.blogproject.dto.PostDto;
 import com.hu.oleg.blogproject.dto.PostPageDto;
 import com.hu.oleg.blogproject.service.PostService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping
-    public ResponseEntity<PostDto> addPost(@RequestBody PostDto postDto, UriComponentsBuilder uriBuilder){
+    public ResponseEntity<PostDto> addPost(@Valid @RequestBody PostDto postDto, UriComponentsBuilder uriBuilder){
         var saved = postService.createPost(postDto);
         var uri = uriBuilder.path("/api/v1/posts/{id}").buildAndExpand(saved.getId()).toUri();
         return ResponseEntity.created(uri).body(saved);
@@ -45,7 +46,7 @@ public class PostController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PostDto> updatePostById(@PathVariable long id, @RequestBody PostDto dto){
+    public ResponseEntity<PostDto> updatePostById(@PathVariable long id,@Valid @RequestBody PostDto dto){
         return ResponseEntity.ok(
                 postService.updatePostById(id,dto));
     }

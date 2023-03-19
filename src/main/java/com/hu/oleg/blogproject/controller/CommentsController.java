@@ -2,6 +2,7 @@ package com.hu.oleg.blogproject.controller;
 
 import com.hu.oleg.blogproject.dto.CommentDto;
 import com.hu.oleg.blogproject.service.CommentService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,7 @@ public class CommentsController {
     @PostMapping("/posts/{id}/comments")
     public ResponseEntity<CommentDto> comment(
             @PathVariable("id") long postId,
-            @RequestBody CommentDto commentDto,
+            @Valid @RequestBody CommentDto commentDto,
             UriComponentsBuilder uriComponentsBuilder){
         var saved = commentService.createComment(postId,commentDto);
         var uri = uriComponentsBuilder
@@ -39,7 +40,7 @@ public class CommentsController {
     }
 
     @PutMapping("comments/{id}")
-    public ResponseEntity<CommentDto> updateComment(@PathVariable long id,@RequestBody CommentDto dto){
+    public ResponseEntity<CommentDto> updateComment(@PathVariable long id,@Valid @RequestBody CommentDto dto){
         return ResponseEntity.ok(commentService.updateCommentById(id,dto));
     }
 
