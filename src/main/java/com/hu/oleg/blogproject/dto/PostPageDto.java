@@ -11,7 +11,7 @@ import java.util.List;
 @Getter
 @ToString
 public class PostPageDto {
-    private List<PostDto> results;
+    private List<PostWithCommentDto> results;
     private int totalPages;
     private long totalElements;
     private boolean isLast;

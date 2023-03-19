@@ -95,7 +95,7 @@ public class PostServiceImpl implements PostService {
         //ctrl+alt+b
         Page<Post> page = postRepository.findAll(pageble);
         return PostPageDto.builder()
-                .results(page.getContent().stream().map(postMapper::toDto).toList())
+                .results(page.getContent().stream().map(postMapper::toDtoWithComments).toList())
                 .pageSize(page.getSize())
                 .pageNo(page.getNumber())
                 .totalElements(page.getTotalElements())
