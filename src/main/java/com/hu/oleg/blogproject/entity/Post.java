@@ -24,7 +24,7 @@ public class Post {
     @NotNull
     private String title;
     @NotNull
-    private String Description;
+    private String description;
     @NotNull
     private String content;
 

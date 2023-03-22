@@ -6,8 +6,6 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * A DTO for the {@link com.hu.oleg.blogproject.entity.Post} entity
@@ -24,7 +22,7 @@ public class PostDto implements Serializable {
     private String title;
     @NotNull
     @Size(min = 3, message = "Title must contain at least 3 char")
-    private String Description;
+    private String description;
     @NotNull
     @NotEmpty
     private String content;

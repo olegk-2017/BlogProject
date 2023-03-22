@@ -7,11 +7,11 @@ import com.hu.oleg.blogproject.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -22,6 +22,7 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<PostDto> addPost(@Valid @RequestBody PostDto postDto, UriComponentsBuilder uriBuilder){
         var saved = postService.createPost(postDto);
         var uri = uriBuilder.path("/api/v1/posts/{id}").buildAndExpand(saved.getId()).toUri();
