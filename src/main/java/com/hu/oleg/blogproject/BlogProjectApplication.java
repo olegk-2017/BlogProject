@@ -1,12 +1,17 @@
 package com.hu.oleg.blogproject;
 
+import com.hu.oleg.blogproject.config.BlogJWTConfig;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 
 @RequiredArgsConstructor
 @SpringBootApplication
+@EnableConfigurationProperties(BlogJWTConfig.class)
 public class BlogProjectApplication  implements CommandLineRunner {
 
 //    private final DepartmentMapper mapper;

@@ -2,6 +2,8 @@ package com.hu.oleg.blogproject.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -13,16 +15,14 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity(debug = true)//print filters to the log
 @EnableMethodSecurity
 public class DefaultSecurityConfig {
+
+    @Bean
+    AuthenticationManager authorizationManager(AuthenticationConfiguration configuration) throws Exception{
+        return configuration.getAuthenticationManager();
+    }
+
     @Bean
     SecurityFilterChain configure(HttpSecurity http) throws Exception {
-//        return http
-//                .csrf()
-//                .and()
-//                .httpBasic()
-//                .and()
-//                .formLogin()
-//                .and()
-//                .build();
         return http
                 .csrf().disable()
                 .authorizeHttpRequests(auth->{
@@ -30,7 +30,8 @@ public class DefaultSecurityConfig {
                     auth.requestMatchers("/api/v1/**").authenticated();
                     auth.anyRequest().permitAll();
                 })
-                .httpBasic((a)->{})
+                .httpBasic(basic->
+                    basic.authenticationEntryPoint(new BlocAuthenticationEntryPoint()))
                 .build();
 
     }
