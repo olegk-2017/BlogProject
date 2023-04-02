@@ -1,5 +1,6 @@
 package com.hu.oleg.blogproject.security;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -10,11 +11,17 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.stereotype.Component;
 
 @Configuration
 @EnableWebSecurity(debug = true)//print filters to the log
 @EnableMethodSecurity
+@RequiredArgsConstructor
+@Component
 public class DefaultSecurityConfig {
+    private final JWTAuthenticationFilter filter;
+
 
     @Bean
     AuthenticationManager authorizationManager(AuthenticationConfiguration configuration) throws Exception{
@@ -24,6 +31,7 @@ public class DefaultSecurityConfig {
     @Bean
     SecurityFilterChain configure(HttpSecurity http) throws Exception {
         return http
+                .addFilterBefore(filter, BasicAuthenticationFilter.class)
                 .csrf().disable()
                 .authorizeHttpRequests(auth->{
                     auth.requestMatchers("/api/v1/auth/**").permitAll();
@@ -31,26 +39,9 @@ public class DefaultSecurityConfig {
                     auth.anyRequest().permitAll();
                 })
                 .httpBasic(basic->
-                    basic.authenticationEntryPoint(new BlocAuthenticationEntryPoint()))
+                    basic.authenticationEntryPoint(new BlogAuthenticationEntryPoint()))
                 .build();
 
     }
-//    @Bean
-//    UserDetailsService userDetailsService(){
-//        UserDetails user1 = User.builder().username("user").password(passwordEncoder().encode("user")).roles("USER").build();
-//        UserDetails user2 = User.builder().username("admin").password(passwordEncoder().encode("admin")).roles("ADMIN").build();
-//
-//        return new InMemoryUserDetailsManager(
-//                user1,user2
-//        );
-//        //admin:
-//        //{bcrypt}$2a$10$Ua.woV66urtrsBPn81h72OV5VIGKEb4b.oi.VdSp4bSsQhCFtc08m
-//        //user:
-//        //{bcrypt}$2a$10$qdcDz2RTU2L18jI/R7ITRewZvX0cvK0UFetBkW90P9xHyTwK.ai36
-//
-//    }
-    @Bean
-    PasswordEncoder passwordEncoder(){
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-    }
+
 }

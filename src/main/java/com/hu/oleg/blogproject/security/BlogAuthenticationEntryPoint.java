@@ -21,7 +21,7 @@ import java.io.IOException;
  * @author BlogProject
  */
 
-public class BlocAuthenticationEntryPoint implements AuthenticationEntryPoint {
+public class BlogAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(
             HttpServletRequest request,

@@ -1,6 +1,7 @@
 package com.hu.oleg.blogproject.service;
 
-import com.hu.oleg.blogproject.dto.SignDto;
+import com.hu.oleg.blogproject.dto.SignInDto;
+import com.hu.oleg.blogproject.dto.SignUpDto;
 import com.hu.oleg.blogproject.dto.UserRegistrationResponseDto;
 import com.hu.oleg.blogproject.entity.Role;
 import com.hu.oleg.blogproject.error.BadRequestException;
@@ -16,7 +17,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
 import java.util.Set;
 
 @Service
@@ -38,7 +38,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
 
-    public UserRegistrationResponseDto createUser(SignDto dto){
+    public UserRegistrationResponseDto createUser(SignUpDto dto){
 
         var byEmail = userRepository.findUserByEmailIgnoreCase(dto.getEmail());
         var byUsername = userRepository.findUserByUsernameIgnoreCase(dto.getUsername());
